@@ -1,7 +1,6 @@
 import html from '../core.js'
 
-export default function Footer(todos) {
-   console.log(todos)
+export default function Footer(todos, filter, filters) {
    return html`
      <footer class="footer">
 				<span class="todo-count"><strong>
@@ -12,25 +11,22 @@ export default function Footer(todos) {
             </strong> item left</span>
             
 				<ul class="filters">
-					<li>
-						<a class="selected" 
-                  href="#/"
-                  onclick="console.log('Clicked on Selected Tab')";
-                  >All</a>
-					</li>
-					<li>
-						<a href="#/active"
-                  onclick="event.target.classList.add('selected')";
-                  >Active</a>
-					</li>
-					<li> 
-						<a href="#/completed"
-                  onclick="console.log('Clicked on Completed Tab')";
-                  >Completed</a>
-					</li>
+
+               ${Object.keys(filters).map(tab => html `
+               <li>
+                  <a class="${filter === tab ? 'selected': ''}" 
+                  href="#"
+                  onclick="dispatch('switchTab', '${tab}')";
+                  >${tab[0].toUpperCase() + tab.slice(1)}
+                  </a>
+               </li>
+               `)}
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">${todos.some(todo => todo.completed === true) ? "Clear completed" : ''}</button>
+				<button class="clear-completed"
+            onclick="dispatch('clearCompleted', '')"
+            >${todos.filter(filters[filter]).some(todo => todo.completed === true) ? "Clear completed" : ''}
+            </button>
       </footer>
     `
 }

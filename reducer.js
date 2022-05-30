@@ -1,7 +1,13 @@
 const init = {
     todos: [
 
-    ]
+    ],
+    filter: 'all',
+    filters: {
+        all: todo => true,
+        active: todo => !todo.completed,
+        completed: todo => todo.completed
+    }  
 }
 
 const actions = {
@@ -10,7 +16,8 @@ const actions = {
             todos.push(
                 {  
                     title: value,
-                    completed: false
+                    completed: false,
+                    edit: false
                 })
         }
     },
@@ -18,7 +25,6 @@ const actions = {
         const childElements  = Array.from(item.parentElement.children)
         for(const todo of todos) {
             if(todo.title === childElements[1].innerText) {
-                console.log(item.checked)
                 todo.completed = item.checked
                 break
             }
@@ -31,10 +37,17 @@ const actions = {
             todos.splice(idx, 1)
         }
     },
-    toggle_all({todos}, toggleAll){
-        console.log([toggleAll])
-        todos.forEach(todo => {
+    toggle_all({todos}){
+        todos.forEach(todo => {  
             todo.completed = !todo.completed
+        })
+    },
+    switchTab(state, tab) {
+        state.filter = tab
+    },
+    clearCompleted({ todos }) {
+        todos.forEach(todo => {
+            todo.completed = false
         })
     }
 }

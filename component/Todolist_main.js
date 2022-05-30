@@ -1,18 +1,19 @@
 import html from '../core.js'
 import TodoItem from './TodoItem.js'
 
-export default function Todolist(listItems) {
+export default function Todolist(listItems, filterTab, filters) {
      return html`
      <section class="main">
      <input 
-     id="toggle-all" 
+     id="toggle-all"    
      class="toggle-all" 
-     type="checkbox"
-     onchange="dispatch('toggle_all', event.target)"
+     type="checkbox" 
+     ${listItems.every(item => item.completed === true) ? 'checked' : ''} 
+     onchange="dispatch('toggle_all')"
      >
      <label for="toggle-all">Mark all as complete</label>
      <ul class="todo-list">   
-        ${listItems.map(item => TodoItem(item)).join(' ')}
+        ${listItems.filter(filters[filterTab]).map(item => TodoItem(item)).join(' ')}
      </ul>
  </section>
     `
