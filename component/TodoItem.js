@@ -11,7 +11,7 @@ export default function TodoItem(item) {
                 ${item.completed ? 'checked' : ''}
                 onchange="dispatch('toggle', event.target)"
                 >
-                <label>${item.title}</label> 
+                <label ondblclick="dispatch('editStart', '${item.title}')">${item.title}</label> 
                 <button 
                 class="destroy" 
                 onclick="dispatch('cancel', event.target)">
@@ -19,7 +19,8 @@ export default function TodoItem(item) {
             </div>
             <input class="edit" 
             placeholder="Edit your task"
-            onkeyup="event.keyCode === 13 && dispatch('edit', this.value.trim())"
+            onkeyup="event.keyCode === 13 && dispatch('editEnd', this.value.trim())"
+            onblur="dispatch('editEnd', this.value.trim())"
             >
         </li>           
     `
